@@ -50,6 +50,9 @@ app.get('/urls/:shortURL', (req, res) => {
 
 app.get('/u/:shortURL', (req, res) => {
   const { shortURL } = req.params;
+  // if shortURL doesn't exist in database, take to homepage for now
+  if (!urlDatabase[shortURL]) return res.redirect('/');
+
   res.redirect(`${urlDatabase[shortURL]}`);
 });
 
