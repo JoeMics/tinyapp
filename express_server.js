@@ -104,6 +104,20 @@ app.post('/login', (req, res) => {
   res.redirect('/urls');
 });
 
+app.post('/register', (req, res) => {
+  const { email, password } = req.body;
+  const newUser = {
+    id: generateRandomString(),
+    email,
+    password,
+  };
+  // update users object with object created here
+  users[newUser.id] = newUser;
+
+  res.cookie('user_id', newUser.id);
+  res.redirect('/urls');
+});
+
 app.post('/logout', (req, res) => {
   res.clearCookie('username');
   res.redirect('/urls');
