@@ -66,6 +66,10 @@ app.get('/u/:shortURL', (req, res) => {
   res.redirect(`${urlDatabase[shortURL]}`);
 });
 
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
 app.post('/urls/:shortURL/delete', (req, res) => {
   const { shortURL } = req.params;
   delete urlDatabase[shortURL];
