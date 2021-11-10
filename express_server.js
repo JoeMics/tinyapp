@@ -32,13 +32,16 @@ const generateRandomString = () => {
   return Math.random().toString(16).substr(2, 6);
 };
 
+const findUserByCookie = (userIdCookie) => {
+  return users[userIdCookie];
+};
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
 app.get('/urls', (req, res) => {
-  const userIdCookie = req.cookies.user_id;
-  const user = users[userIdCookie];
+  const user = findUserByCookie(req.cookies.user_id);
   const templateVars = {
     user,
     urls: urlDatabase,
@@ -55,8 +58,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  const userIdCookie = req.cookies.user_id;
-  const user = users[userIdCookie];
+  const user = findUserByCookie(req.cookies.user_id);
   const templateVars = {
     user,
   };
@@ -66,8 +68,7 @@ app.get("/urls/new", (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
 
-  const userIdCookie = req.cookies.user_id;
-  const user = users[userIdCookie];
+  const user = findUserByCookie(req.cookies.user_id);
 
   const templateVars = {
     user,
@@ -87,8 +88,7 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  const userIdCookie = req.cookies.user_id;
-  const user = users[userIdCookie];
+  const user = findUserByCookie(req.cookies.user_id);
 
   const templateVars = {
     user
