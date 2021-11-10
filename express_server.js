@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  const userIdCookie = req.cookie.user_id;
+  const userIdCookie = req.cookies.user_id;
   const user = users[userIdCookie];
   const templateVars = {
     user,
@@ -55,7 +55,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  const userIdCookie = req.cookie.user_id;
+  const userIdCookie = req.cookies.user_id;
   const user = users[userIdCookie];
   const templateVars = {
     user,
@@ -66,7 +66,7 @@ app.get("/urls/new", (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
 
-  const userIdCookie = req.cookie.user_id;
+  const userIdCookie = req.cookies.user_id;
   const user = users[userIdCookie];
 
   const templateVars = {
@@ -87,7 +87,7 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  const userIdCookie = req.cookie.user_id;
+  const userIdCookie = req.cookies.user_id;
   const user = users[userIdCookie];
 
   const templateVars = {
