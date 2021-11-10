@@ -116,6 +116,19 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
   const { email, password } = req.body;
+  //check to make sure email and pass are not empty strings
+  if (email === '' || password === '') {
+    return res.status(400).end();
+  }
+  // check to make sure email is not in users already
+  for (const user in users) {
+    if (email === users[user].email) {
+      return res.status(400).end();
+    }
+  }
+
+  // if either fail, send 400 code
+
   const newUser = {
     id: generateRandomString(),
     email,
