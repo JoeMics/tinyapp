@@ -158,6 +158,17 @@ app.get('/login', (req, res) => {
 
 app.post('/urls/:shortURL/delete', (req, res) => {
   const { shortURL } = req.params;
+  const user = findUserByCookie(req.cookies.user_id);
+  // if user is not logged in, return 403
+  if (!user) {
+    return res.status(403).send("Error: must be logged in to delete URLs");
+  }
+  // check if link doesn't belong to user, return 403
+  const userURLS = urlsForUser(user.id);
+  if (!userURLS[shortURL]) {
+    return res.status(403).send("Error: You do not have permissions to delete this URL");
+  }
+  
   delete urlDatabase[shortURL];
   res.redirect('/urls');
 });
