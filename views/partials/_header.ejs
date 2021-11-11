@@ -12,7 +12,7 @@
     </div>
     <a class="btn btn-primary mr-2" href="/register">Register</a>
     <% if (!user) { %>
-      <button class="btn btn-outline-dark "><a href="/login">Login</a></button>
+      <a class="btn btn-dark" href="/login">Login</a>
     <% } else { %>
       <form action="/logout" method="post">
         <button class="btn btn-outline-dark " type="submit">Logout</button>
