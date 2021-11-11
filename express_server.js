@@ -234,12 +234,12 @@ app.post('/login', (req, res) => {
   const user = findUserByEmail(users, email);
   // if user can't be found, respond with 403
   if (!user) {
-    return res.status(403).end();
+    return res.status(403).send('User not found');
   }
   // if found compare passwords
   if (password !== user.password) {
     // if they don't match, respond with 403
-    return res.status(403).end();
+    return res.status(403).send('Password and email do not match');
   }
 
   res.cookie('user_id', user.id);
