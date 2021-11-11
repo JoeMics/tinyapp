@@ -56,6 +56,9 @@ app.get("/", (req, res) => {
 
 app.get('/urls', (req, res) => {
   const user = findUserByCookie(req.cookies.user_id);
+  if (!user) {
+    res.status(403).send("You must be logged in to see shortened URLs");
+  }
   const templateVars = {
     user,
     urls: urlDatabase,
