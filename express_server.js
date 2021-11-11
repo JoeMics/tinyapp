@@ -149,7 +149,22 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 
 app.post('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
-  urlDatabase[shortURL] = req.body.newURL;
+  const user = findUserByCookie(req.cookies.user_id);
+
+  // if user is not logged in, return 403
+  if (!user) {
+    return res.status(403).send("Error: must be logged in to edit short URLs");
+  }
+  // check if link doesn't belong to user, return 403
+  const linkOwner = urlDatabase[shortURL].userID;
+  if (linkOwner !== user.id) {
+    return res.status(403).send("Error: You do not have access to this URL");
+  }
+
+  // update object in the urlDatabase
+  const { newURL } = req.body;
+  urlDatabase[shortURL].longURL = newURL;
+
   res.redirect('/urls');
 });
 
