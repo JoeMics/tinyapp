@@ -238,13 +238,15 @@ app.post('/login', (req, res) => {
     return res.status(403).send('User not found');
   }
   // if found compare passwords
-  if (password !== user.password) {
-    // if they don't match, respond with 403
-    return res.status(403).send('Password and email do not match');
-  }
+  bcrypt.compare(password, user.password, (err, isMatching) => {
+    if (!isMatching) {
+      // if they don't match, respond with 403
+      return res.status(403).send('Password and email do not match');
+    }
 
-  res.cookie('user_id', user.id);
-  res.redirect('/urls');
+    res.cookie('user_id', user.id);
+    res.redirect('/urls');
+  });
 });
 
 app.post('/register', (req, res) => {
