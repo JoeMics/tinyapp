@@ -250,11 +250,11 @@ app.post('/register', (req, res) => {
   const { email, password } = req.body;
   //check to make sure email and pass are not empty strings
   if (email === '' || password === '') {
-    return res.status(400).end();
+    return res.status(400).send('No empty fields allowed');
   }
   // check to make sure email is not in users already
   if (findUserByEmail(users, email)) {
-    return res.status(400).end();
+    return res.status(400).send('Account already exists');
   }
 
   const newUser = {
