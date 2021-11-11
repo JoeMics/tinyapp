@@ -55,6 +55,18 @@ const urlBelongsToUser = (database, shortURL, userToCheck) => {
   return linkOwner === userToCheck.id;
 };
 
+const urlsForUser = (id) => {
+  const userURLS = {};
+  for (const url in urlDatabase) {
+    // check to see if the url's userID === id
+    if (urlDatabase[url].userID === id) {
+      //  if it is, add it to the new object
+      userURLS[url] = urlDatabase[url];
+    }
+  }
+  return userURLS;
+};
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -66,7 +78,7 @@ app.get('/urls', (req, res) => {
   }
   const templateVars = {
     user,
-    urls: urlDatabase,
+    urls: urlsForUser(user.id),
   };
   res.render('urls_index', templateVars);
 });
