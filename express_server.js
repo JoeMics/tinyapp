@@ -129,7 +129,7 @@ app.post('/login', (req, res) => {
   const user = findUserByEmail(users, email);
   // if user can't be found, respond with 403
   if (!user) {
-    return res.staus(403).end();
+    return res.status(403).end();
   }
   // if found compare passwords
   if (password !== user.password) {
@@ -165,7 +165,7 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 });
 
