@@ -67,9 +67,14 @@ app.post("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   const user = findUserByCookie(req.cookies.user_id);
+  if (!user) {
+    return res.redirect('/login');
+  }
+
   const templateVars = {
     user,
   };
+  
   res.render("urls_new", templateVars);
 });
 
