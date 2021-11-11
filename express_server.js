@@ -126,7 +126,17 @@ app.post('/urls/:shortURL', (req, res) => {
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  const user = findUserByEmail(email);
+  const user = findUserByEmail(users, email);
+  // if user can't be found, respond with 403
+  if (!user) {
+    return res.staus(403).end();
+  }
+  // if found compare passwords
+  if (password !== user.password) {
+    // if they don't match, respond with 403
+    return res.status(403).end();
+  }
+
   res.cookie('user_id', user.id);
   res.redirect('/urls');
 });
