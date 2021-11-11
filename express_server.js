@@ -90,7 +90,7 @@ app.get('/urls', (req, res) => {
 app.post("/urls", (req, res) => {
   // check if user is logged in before creating a url
   const user = findUserByCookie(req.cookies.user_id);
-  
+
   //check if user is logged in
   if (!user) {
     const templateVars = {
@@ -133,12 +133,25 @@ app.get('/urls/:shortURL', (req, res) => {
   const user = findUserByCookie(req.cookies.user_id);
   // if user is not logged in, return 403
   if (!user) {
-    return res.status(403).send("Error: must be logged in to edit short URLs");
+    const templateVars = {
+      user,
+      message: "You must be logged in.",
+      responseCode: 403,
+    };
+  
+    return res.status(403).render('error', templateVars);
   }
+
   // check if link doesn't belong to user, return 403
   const userURLS = urlsForUser(user.id);
   if (!userURLS[shortURL]) {
-    return res.status(403).send("Error: You do not have access to this URL");
+    const templateVars = {
+      user,
+      message: "You do not have permissions to edit this url",
+      responseCode: 403,
+    };
+
+    return res.status(403).render('error', templateVars);
   }
 
   const templateVars = {
