@@ -94,14 +94,23 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get('/urls/:shortURL', (req, res) => {
-  const shortURL = req.params.shortURL;
+  const { shortURL } = req.params;
 
   const user = findUserByCookie(req.cookies.user_id);
+  // if user is not logged in, return 403
+  if (!user) {
+    return res.status(403).send("Error: must be logged in to edit short URLs");
+  }
+  // check if link doesn't belong to user, return 403
+  const linkOwner = urlDatabase[shortURL].userID;
+  if (linkOwner !== user.id) {
+    return res.status(403).send("Error: You do not have access to this URL");
+  }
 
   const templateVars = {
     user,
     shortURL,
-    longURL: urlDatabase[shortURL]
+    longURL: urlDatabase[shortURL].longURL
   };
 
   res.render('urls_show', templateVars);
