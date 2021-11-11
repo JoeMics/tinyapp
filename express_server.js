@@ -11,8 +11,14 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    longUrl: "http://www.lighthouselabs.ca",
+    userID: "h2f7h3"
+  },
+  "9sm5xK": {
+    longUrl: "http://www.google.com",
+    userID: "h1k2j1"
+  }
 };
 
 const users = {
