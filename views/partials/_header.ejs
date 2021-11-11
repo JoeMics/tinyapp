@@ -10,10 +10,11 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
-    <a class="btn btn-primary mr-2" href="/register">Register</a>
     <% if (!user) { %>
+      <a class="btn btn-primary mr-2" href="/register">Register</a>
       <a class="btn btn-dark" href="/login">Login</a>
     <% } else { %>
+      <span class="mr-2">Logged in as <%= user.email %></span>
       <form action="/logout" method="post">
         <button class="btn btn-outline-dark " type="submit">Logout</button>
       </form>
