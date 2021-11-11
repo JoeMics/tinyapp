@@ -233,8 +233,8 @@ app.post('/login', (req, res) => {
 app.post('/register', (req, res) => {
   const { email, password } = req.body;
   //check to make sure email and pass are not empty strings
-  if (email === '' || password === '') {
-    return res.status(400).send('No empty fields allowed');
+  if (!email || !password) {
+    return res.status(400).send('Missing email or password');
   }
   // check to make sure email is not in users already
   if (findUserByEmail(users, email)) {
