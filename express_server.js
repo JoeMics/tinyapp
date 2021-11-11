@@ -68,9 +68,18 @@ app.get("/", (req, res) => {
 
 app.get('/urls', (req, res) => {
   const user = findUserByCookie(req.cookies.user_id);
+
+  //check if user is logged in
   if (!user) {
-    res.status(403).send("You must be logged in to see shortened URLs");
+    const templateVars = {
+      user,
+      message: "You must be logged in.",
+      responseCode: 403,
+    };
+  
+    return res.status(403).render('error', templateVars);
   }
+
   const templateVars = {
     user,
     urls: urlsForUser(user.id),
@@ -81,8 +90,16 @@ app.get('/urls', (req, res) => {
 app.post("/urls", (req, res) => {
   // check if user is logged in before creating a url
   const user = findUserByCookie(req.cookies.user_id);
+  
+  //check if user is logged in
   if (!user) {
-    return res.status(403).send('Error: must be logged in to create a URL');
+    const templateVars = {
+      user,
+      message: "You must be logged in.",
+      responseCode: 403,
+    };
+  
+    return res.status(403).render('error', templateVars);
   }
 
   const { longURL } = req.body;
