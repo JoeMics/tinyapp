@@ -119,7 +119,8 @@ app.get('/urls/:shortURL', (req, res) => {
     return res.status(403).send("Error: must be logged in to edit short URLs");
   }
   // check if link doesn't belong to user, return 403
-  if (!urlBelongsToUser(urlDatabase, shortURL, user)) {
+  const userURLS = urlsForUser(user.id);
+  if (!userURLS[shortURL]) {
     return res.status(403).send("Error: You do not have access to this URL");
   }
 
