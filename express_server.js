@@ -36,15 +36,14 @@ const users = {
     email: 'a@a',
     password: '$2b$10$n.xHo8DCl9v/Pnd9.pqrHOMz4bCTeu49EeyOeRvM.rv46YqZEDXDy'
   }
-
 };
 
 const generateRandomString = () => {
   return Math.random().toString(16).substr(2, 6);
 };
 
-const findUserByCookie = (userIdCookie) => {
-  return users[userIdCookie];
+const findUserByCookie = (userDB,userIdCookie) => {
+  return userDB[userIdCookie];
 };
 
 const findUserByEmail = (userDB, email) => {
@@ -72,7 +71,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
 
   //check if user is logged in
   if (!user) {
@@ -94,7 +93,7 @@ app.get('/urls', (req, res) => {
 
 app.post("/urls", (req, res) => {
   // check if user is logged in before creating a url
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
 
   //check if user is logged in
   if (!user) {
@@ -120,7 +119,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
   if (!user) {
     return res.redirect('/login');
   }
@@ -135,7 +134,7 @@ app.get("/urls/new", (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
   // TODO: check if url exists first
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
   // if user is not logged in, return 403
   if (!user) {
     const templateVars = {
@@ -180,7 +179,7 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
 
   const templateVars = {
     user
@@ -189,7 +188,7 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
   const templateVars = {
     user
   };
@@ -198,7 +197,7 @@ app.get('/login', (req, res) => {
 
 app.post('/urls/:shortURL/delete', (req, res) => {
   const { shortURL } = req.params;
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
   // if user is not logged in, return 403
   if (!user) {
     return res.status(403).send("Error: must be logged in to delete URLs");
@@ -215,7 +214,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 
 app.post('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
-  const user = findUserByCookie(req.session.userID);
+  const user = findUserByCookie(users, req.session.userID);
 
   // if user is not logged in, return 403
   if (!user) {
