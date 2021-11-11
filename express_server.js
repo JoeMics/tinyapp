@@ -1,13 +1,13 @@
 const express = require("express");
-const app = express();
+const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
+
 const PORT = 8080; // default port 8080
 
-const bodyParser = require("body-parser");
+const app = express();
+
 app.use(bodyParser.urlencoded({extended: true}));
-
-const cookieParser = require('cookie-parser');
 app.use(cookieParser());
-
 app.set("view engine", "ejs");
 
 const urlDatabase = {
