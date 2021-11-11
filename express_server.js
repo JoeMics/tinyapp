@@ -96,6 +96,14 @@ app.get('/register', (req, res) => {
   res.render('register', templateVars);
 });
 
+app.get('/login', (req, res) => {
+  const user = findUserByCookie(req.cookies.user_id);
+  const templateVars = {
+    user
+  };
+  res.render('login', templateVars);
+});
+
 app.post('/urls/:shortURL/delete', (req, res) => {
   const { shortURL } = req.params;
   delete urlDatabase[shortURL];
