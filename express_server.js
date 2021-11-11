@@ -36,6 +36,14 @@ const findUserByCookie = (userIdCookie) => {
   return users[userIdCookie];
 };
 
+const findUserByEmail = (userDB, email) => {
+  for (const user in userDB) {
+    if (email === userDB[user].email) {
+      return userDB[user];
+    }
+  }
+};
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -116,14 +124,6 @@ app.post('/urls/:shortURL', (req, res) => {
   res.redirect('/urls');
 });
 
-const findUserByEmail = (userDB, email) => {
-  for (const user in userDB) {
-    if (email === userDB[user].email) {
-      return userDB[user];
-    }
-  }
-};
-
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   const user = findUserByEmail(email);
@@ -138,13 +138,9 @@ app.post('/register', (req, res) => {
     return res.status(400).end();
   }
   // check to make sure email is not in users already
-  for (const user in users) {
-    if (email === users[user].email) {
-      return res.status(400).end();
-    }
+  if (findUserByEmail(users, email)) {
+    return res.status(400).end();
   }
-
-  // if either fail, send 400 code
 
   const newUser = {
     id: generateRandomString(),
