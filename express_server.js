@@ -116,9 +116,18 @@ app.post('/urls/:shortURL', (req, res) => {
   res.redirect('/urls');
 });
 
+const findUserByEmail = (userDB, email) => {
+  for (const user in userDB) {
+    if (email === userDB[user].email) {
+      return userDB[user];
+    }
+  }
+};
+
 app.post('/login', (req, res) => {
-  const { username } = req.body;
-  res.cookie('username', username);
+  const { email, password } = req.body;
+  const user = findUserByEmail(email);
+  res.cookie('user_id', user.id);
   res.redirect('/urls');
 });
 
