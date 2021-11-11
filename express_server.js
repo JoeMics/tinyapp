@@ -72,7 +72,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
 
   //check if user is logged in
   if (!user) {
@@ -94,7 +94,7 @@ app.get('/urls', (req, res) => {
 
 app.post("/urls", (req, res) => {
   // check if user is logged in before creating a url
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
 
   //check if user is logged in
   if (!user) {
@@ -120,7 +120,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
   if (!user) {
     return res.redirect('/login');
   }
@@ -135,7 +135,7 @@ app.get("/urls/new", (req, res) => {
 app.get('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
   // TODO: check if url exists first
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
   // if user is not logged in, return 403
   if (!user) {
     const templateVars = {
@@ -180,7 +180,7 @@ app.get('/u/:shortURL', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
 
   const templateVars = {
     user
@@ -189,7 +189,7 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
   const templateVars = {
     user
   };
@@ -198,7 +198,7 @@ app.get('/login', (req, res) => {
 
 app.post('/urls/:shortURL/delete', (req, res) => {
   const { shortURL } = req.params;
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
   // if user is not logged in, return 403
   if (!user) {
     return res.status(403).send("Error: must be logged in to delete URLs");
@@ -215,7 +215,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 
 app.post('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
-  const user = findUserByCookie(req.cookies.user_id);
+  const user = findUserByCookie(req.session.userID);
 
   // if user is not logged in, return 403
   if (!user) {
@@ -248,7 +248,7 @@ app.post('/login', (req, res) => {
       return res.status(403).send('Password and email do not match');
     }
 
-    res.cookie('user_id', user.id);
+    req.session.userID = user.id;
     res.redirect('/urls');
   });
 });
@@ -274,13 +274,13 @@ app.post('/register', (req, res) => {
     // update users object with object created here
     users[newUser.id] = newUser;
   
-    res.cookie('user_id', newUser.id);
+    req.session.userID = newUser.id;
     res.redirect('/urls');
   });
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('user_id');
+  req.session.userID = null;
   res.redirect('/urls');
 });
 
