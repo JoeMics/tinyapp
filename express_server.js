@@ -58,6 +58,12 @@ app.get('/urls', (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
+  // check if user is logged in before creating a url
+  const user = findUserByCookie(req.cookies.user_id);
+  if (!user) {
+    return res.status(403).send('Error: must be logged in to create a URL');
+  }
+
   const { longURL } = req.body;
   const shortURL = generateRandomString();
   urlDatabase[shortURL] = longURL;
@@ -74,7 +80,7 @@ app.get("/urls/new", (req, res) => {
   const templateVars = {
     user,
   };
-  
+
   res.render("urls_new", templateVars);
 });
 
