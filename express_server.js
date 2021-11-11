@@ -258,16 +258,19 @@ app.post('/register', (req, res) => {
     return res.status(400).send('Account already exists');
   }
 
-  const newUser = {
-    id: generateRandomString(),
-    email,
-    password,
-  };
-  // update users object with object created here
-  users[newUser.id] = newUser;
-
-  res.cookie('user_id', newUser.id);
-  res.redirect('/urls');
+  // hash and salt the plaintext password
+  bcrypt.hash(password, 10, (err, hashedPassword) => {
+    const newUser = {
+      id: generateRandomString(),
+      email,
+      password: hashedPassword,
+    };
+    // update users object with object created here
+    users[newUser.id] = newUser;
+  
+    res.cookie('user_id', newUser.id);
+    res.redirect('/urls');
+  });
 });
 
 app.post('/logout', (req, res) => {
