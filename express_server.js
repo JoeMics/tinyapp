@@ -50,6 +50,11 @@ const findUserByEmail = (userDB, email) => {
   }
 };
 
+const urlBelongsToUser = (database, shortURL, userToCheck) => {
+  const linkOwner = database[shortURL].userID;
+  return linkOwner === userToCheck.id;
+};
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -95,15 +100,14 @@ app.get("/urls/new", (req, res) => {
 
 app.get('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
-
+  // TODO: check if url exists first
   const user = findUserByCookie(req.cookies.user_id);
   // if user is not logged in, return 403
   if (!user) {
     return res.status(403).send("Error: must be logged in to edit short URLs");
   }
   // check if link doesn't belong to user, return 403
-  const linkOwner = urlDatabase[shortURL].userID;
-  if (linkOwner !== user.id) {
+  if (!urlBelongsToUser(urlDatabase, shortURL, user)) {
     return res.status(403).send("Error: You do not have access to this URL");
   }
 
@@ -156,8 +160,7 @@ app.post('/urls/:shortURL', (req, res) => {
     return res.status(403).send("Error: must be logged in to edit short URLs");
   }
   // check if link doesn't belong to user, return 403
-  const linkOwner = urlDatabase[shortURL].userID;
-  if (linkOwner !== user.id) {
+  if (!urlBelongsToUser(urlDatabase, shortURL, user)) {
     return res.status(403).send("Error: You do not have access to this URL");
   }
 
