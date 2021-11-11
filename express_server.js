@@ -50,11 +50,6 @@ const findUserByEmail = (userDB, email) => {
   }
 };
 
-const urlBelongsToUser = (database, shortURL, userToCheck) => {
-  const linkOwner = database[shortURL].userID;
-  return linkOwner === userToCheck.id;
-};
-
 const urlsForUser = (id) => {
   const userURLS = {};
   for (const url in urlDatabase) {
