@@ -42,7 +42,7 @@ const generateRandomString = () => {
   return Math.random().toString(16).substr(2, 6);
 };
 
-const findUserByCookie = (userDB,userIdCookie) => {
+const findUserByCookie = (userDB, userIdCookie) => {
   return userDB[userIdCookie];
 };
 
@@ -54,13 +54,13 @@ const findUserByEmail = (userDB, email) => {
   }
 };
 
-const urlsForUser = (id) => {
+const urlsForUser = (urlDB, id) => {
   const userURLS = {};
-  for (const url in urlDatabase) {
+  for (const url in urlDB) {
     // check to see if the url's userID === id
-    if (urlDatabase[url].userID === id) {
+    if (urlDB[url].userID === id) {
       //  if it is, add it to the new object
-      userURLS[url] = urlDatabase[url];
+      userURLS[url] = urlDB[url];
     }
   }
   return userURLS;
@@ -86,7 +86,7 @@ app.get('/urls', (req, res) => {
 
   const templateVars = {
     user,
-    urls: urlsForUser(user.id),
+    urls: urlsForUser(urlDatabase, user.id),
   };
   res.render('urls_index', templateVars);
 });
@@ -147,7 +147,7 @@ app.get('/urls/:shortURL', (req, res) => {
   }
 
   // check if link doesn't belong to user, return 403
-  const userURLS = urlsForUser(user.id);
+  const userURLS = urlsForUser(urlDatabase, user.id);
   if (!userURLS[shortURL]) {
     const templateVars = {
       user,
@@ -203,7 +203,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
     return res.status(403).send("Error: must be logged in to delete URLs");
   }
   // check if link doesn't belong to user, return 403
-  const userURLS = urlsForUser(user.id);
+  const userURLS = urlsForUser(urlDatabase, user.id);
   if (!userURLS[shortURL]) {
     return res.status(403).send("Error: You do not have permissions to delete this URL");
   }
@@ -221,7 +221,7 @@ app.post('/urls/:shortURL', (req, res) => {
     return res.status(403).send("Error: must be logged in to edit short URLs");
   }
   // check if link doesn't belong to user, return 403
-  const userURLS = urlsForUser(user.id);
+  const userURLS = urlsForUser(urlDatabase, user.id);
   if (!userURLS[shortURL]) {
     return res.status(403).send("Error: You do not have access to this URL");
   }
