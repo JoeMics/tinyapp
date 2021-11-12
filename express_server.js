@@ -61,10 +61,12 @@ app.get('/urls', (req, res) => {
       .send('You must be logged in to view this page. Log in <a href="/login">here</a>');
   }
 
+  const urls = urlsForUser(urlDatabase, user.id);
   const templateVars = {
     user,
-    urls: urlsForUser(urlDatabase, user.id),
+    urls,
   };
+  
   res.render('urls_index', templateVars);
 });
 
