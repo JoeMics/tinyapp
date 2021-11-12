@@ -66,7 +66,7 @@ app.get('/urls', (req, res) => {
     user,
     urls,
   };
-  
+
   res.render('urls_index', templateVars);
 });
 
@@ -97,17 +97,13 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`);
 });
 
-app.get("/urls/new", (req, res) => {
+app.get('/urls/new', (req, res) => {
   const user = findUserByCookie(users, req.session.userID);
   if (!user) {
     return res.redirect('/login');
   }
 
-  const templateVars = {
-    user,
-  };
-
-  res.render("urls_new", templateVars);
+  res.render("urls_new", { user });
 });
 
 app.get('/urls/:shortURL', (req, res) => {
