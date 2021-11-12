@@ -76,4 +76,17 @@ describe('#findUserByCookie', () => {
 
     assert.deepEqual(expectedUser, actualUser);
   });
+
+  it('should return undefined if not provided a matching id/cookie', () => {
+    const notACookie = 'a0a0a0';
+    const actualUser = findUserByCookie(users, notACookie);
+
+    assert.isUndefined(actualUser);
+  });
+
+  it('should return undefined if not provided any id/cookie', () => {
+    const actualUser = findUserByCookie(users);
+
+    assert.isUndefined(actualUser);
+  });
 });
