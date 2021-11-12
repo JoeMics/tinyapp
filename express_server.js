@@ -141,11 +141,11 @@ app.get('/u/:shortURL', (req, res) => {
 
 app.get('/register', (req, res) => {
   const user = findUserByCookie(users, req.session.userID);
-
-  const templateVars = {
-    user
-  };
-  res.render('register', templateVars);
+  if (user) {
+    res.redirect('/urls');
+  }
+  
+  res.render('register', { user });
 });
 
 app.get('/login', (req, res) => {
