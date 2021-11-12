@@ -45,7 +45,12 @@ const users = {
 };
 
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  const user = findUserByCookie(users, req.session.userID);
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.redirect('/urls');
 });
 
 app.get('/urls', (req, res) => {
