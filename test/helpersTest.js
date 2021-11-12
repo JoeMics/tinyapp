@@ -110,4 +110,11 @@ describe('#urlsForUser', () => {
 
     assert.deepEqual(expectedResult, actualResult);
   });
+
+  it('should return an empty object if an id is not passed', () => {
+    const expectedResult = {};
+    const actualResult = urlsForUser(urlDatabase);
+
+    assert.deepEqual(expectedResult, actualResult);
+  });
 });
