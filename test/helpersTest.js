@@ -103,4 +103,11 @@ describe('#urlsForUser', () => {
 
     assert.deepEqual(expectedResult, actualResult);
   });
+
+  it('should return an empty object if user does not have any urls', () => {
+    const expectedResult = {};
+    const actualResult = urlsForUser(urlDatabase, 'not@u5er');
+
+    assert.deepEqual(expectedResult, actualResult);
+  });
 });
