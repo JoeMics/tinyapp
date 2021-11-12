@@ -139,13 +139,14 @@ app.get('/urls/:shortURL', (req, res) => {
 
 app.get('/u/:shortURL', (req, res) => {
   const { shortURL } = req.params;
-  // if shortURL doesn't exist in database, take to homepage for now
-  if (!urlDatabase[shortURL]) {
-    res.status(404);
-    return res.redirect('/');
+  const urlInDatabase = urlDatabase[shortURL];
+  if (!urlInDatabase) {
+    return res.status(404)
+      .send('Url does not exist');
   }
 
-  res.redirect(`${urlDatabase[shortURL].longURL}`);
+  const { longURL } = urlInDatabase;
+  res.redirect(`${longURL}`);
 });
 
 app.get('/register', (req, res) => {
