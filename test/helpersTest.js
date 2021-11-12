@@ -63,3 +63,17 @@ describe('#generateRandomString', () => {
     assert.isTrue(randString.length === 6);
   });
 });
+
+describe('#findUserByCookie', () => {
+  it('should return the correct user with the decoded id cookie', () => {
+    const decodedCookie = '049b06';
+    const expectedUser = {
+      id: '049b06',
+      email: 'a@a',
+      password: '$2b$10$n.xHo8DCl9v/Pnd9.pqrHOMz4bCTeu49EeyOeRvM.rv46YqZEDXDy'
+    };
+    const actualUser = findUserByCookie(users, decodedCookie);
+
+    assert.deepEqual(expectedUser, actualUser);
+  });
+});
