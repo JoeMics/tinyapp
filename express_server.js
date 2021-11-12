@@ -22,8 +22,6 @@ app.use(cookieSession({
 }));
 app.set("view engine", "ejs");
 
-
-
 app.get("/", (req, res) => {
   const user = findUserByCookie(users, req.session.userID);
   if (!user) {
@@ -47,24 +45,6 @@ app.get('/urls', (req, res) => {
   };
 
   res.render('urls_index', templateVars);
-});
-
-app.post("/urls", (req, res) => {
-  const user = findUserByCookie(users, req.session.userID);
-  if (!user) {
-    return res.status(403)
-      .send('You must be logged in to view this page. Log in <a href="/login">here</a>');
-  }
-
-  const { longURL } = req.body;
-  const shortURL = generateRandomString();
-  const userID = user.id;
-  urlDatabase[shortURL] = {
-    longURL,
-    userID,
-  };
-
-  res.redirect(`/urls/${shortURL}`);
 });
 
 app.get('/urls/new', (req, res) => {
@@ -135,6 +115,24 @@ app.get('/login', (req, res) => {
   }
 
   res.render('login', { user });
+});
+
+app.post("/urls", (req, res) => {
+  const user = findUserByCookie(users, req.session.userID);
+  if (!user) {
+    return res.status(403)
+      .send('You must be logged in to view this page. Log in <a href="/login">here</a>');
+  }
+
+  const { longURL } = req.body;
+  const shortURL = generateRandomString();
+  const userID = user.id;
+  urlDatabase[shortURL] = {
+    longURL,
+    userID,
+  };
+
+  res.redirect(`/urls/${shortURL}`);
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
