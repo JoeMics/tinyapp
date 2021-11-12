@@ -108,7 +108,12 @@ app.get('/urls/new', (req, res) => {
 
 app.get('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
-  // TODO: check if url exists first
+  // Check if url exists at all
+  if (!urlDatabase[shortURL]) {
+    return res.status(404)
+      .send('Url does not exist.');
+  }
+
   const user = findUserByCookie(users, req.session.userID);
   if (!user) {
     return res.status(403)
