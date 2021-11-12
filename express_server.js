@@ -25,7 +25,7 @@ const urlDatabase = {
     longURL: "http://www.lighthouselabs.ca",
     userID: "049b06"
   },
-  "9sm5xK": {
+  "Ksm5xK": {
     longURL: "http://www.google.com",
     userID: "5a0fae"
   }
@@ -162,7 +162,7 @@ app.post('/urls/:shortURL/delete', (req, res) => {
   if (!user) {
     return res.status(403).send("Error: must be logged in to delete URLs");
   }
-  
+
   // check if link doesn't belong to user, return 403
   const userURLS = urlsForUser(urlDatabase, user.id);
   if (!userURLS[shortURL]) {
@@ -176,11 +176,10 @@ app.post('/urls/:shortURL/delete', (req, res) => {
 app.post('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
   const user = findUserByCookie(users, req.session.userID);
-
-  // if user is not logged in, return 403
   if (!user) {
     return res.status(403).send("Error: must be logged in to edit short URLs");
   }
+
   // check if link doesn't belong to user, return 403
   const userURLS = urlsForUser(urlDatabase, user.id);
   if (!userURLS[shortURL]) {
