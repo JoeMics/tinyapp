@@ -112,25 +112,21 @@ app.get('/urls/:shortURL', (req, res) => {
   const user = findUserByCookie(users, req.session.userID);
   if (!user) {
     return res.status(403)
-      .send('You must be logged in. Log in <a href="/login">here</a>');
+      .send('You must be logged in. Log in <a href="/login">here</a>.');
   }
 
-  // check if link doesn't belong to user, return 403
+  // The existence of the short URL must be checked before trying to assign to a variable
   const userURLS = urlsForUser(urlDatabase, user.id);
   if (!userURLS[shortURL]) {
-    const templateVars = {
-      user,
-      message: "You do not have permissions to edit this url",
-      responseCode: 403,
-    };
-
-    return res.status(403).render('error', templateVars);
+    return res.status(403)
+      .send('You do not have permissions to edit this url.');
   }
 
+  const { longURL } = userURLS[shortURL];
   const templateVars = {
     user,
     shortURL,
-    longURL: urlDatabase[shortURL].longURL
+    longURL,
   };
 
   res.render('urls_show', templateVars);
