@@ -110,15 +110,9 @@ app.get('/urls/:shortURL', (req, res) => {
   const { shortURL } = req.params;
   // TODO: check if url exists first
   const user = findUserByCookie(users, req.session.userID);
-  // if user is not logged in, return 403
   if (!user) {
-    const templateVars = {
-      user,
-      message: "You must be logged in.",
-      responseCode: 403,
-    };
-  
-    return res.status(403).render('error', templateVars);
+    return res.status(403)
+      .send('You must be logged in. Log in <a href="/login">here</a>');
   }
 
   // check if link doesn't belong to user, return 403
