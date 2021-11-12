@@ -77,12 +77,11 @@ app.post("/urls", (req, res) => {
   }
 
   const { longURL } = req.body;
-  // TODO: check if longURL exists already
   const shortURL = generateRandomString();
-
+  const userID = user.id;
   urlDatabase[shortURL] = {
     longURL,
-    userID: user.id
+    userID,
   };
 
   res.redirect(`/urls/${shortURL}`);
