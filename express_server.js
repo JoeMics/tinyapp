@@ -55,16 +55,10 @@ app.get("/", (req, res) => {
 
 app.get('/urls', (req, res) => {
   const user = findUserByCookie(users, req.session.userID);
-
   //check if user is logged in
   if (!user) {
-    const templateVars = {
-      user,
-      message: "You must be logged in.",
-      responseCode: 403,
-    };
-  
-    return res.status(403).render('error', templateVars);
+    return res.status(403)
+      .send('You must be logged in to view this page. Log in <a href="/login">here</a>');
   }
 
   const templateVars = {
