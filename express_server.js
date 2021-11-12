@@ -213,26 +213,27 @@ app.post('/login', (req, res) => {
 
 app.post('/register', (req, res) => {
   const { email, password } = req.body;
-  //check to make sure email and pass are not empty strings
   if (!email || !password) {
     return res.status(400).send('Missing email or password');
   }
-  // check to make sure email is not in users already
-  if (findUserByEmail(users, email)) {
+
+  const existingUser = findUserByEmail(users, email);
+  if (existingUser) {
     return res.status(400).send('Account already exists');
   }
 
   // hash and salt the plaintext password
   bcrypt.hash(password, 10, (err, hashedPassword) => {
+    const id = generateRandomString();
     const newUser = {
-      id: generateRandomString(),
+      id,
       email,
       password: hashedPassword,
     };
-    // update users object with object created here
+    // update users database with object created here
     users[newUser.id] = newUser;
-  
     req.session.userID = newUser.id;
+
     res.redirect('/urls');
   });
 });
