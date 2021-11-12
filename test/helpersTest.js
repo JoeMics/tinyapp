@@ -48,3 +48,18 @@ describe('#findUserByEmail', () => {
     assert.isUndefined(nonExistantUser);
   });
 });
+
+describe('#generateRandomString', () => {
+  it('should not generate two identical strings', () => {
+    const randStringOne = generateRandomString();
+    const randStringTwo = generateRandomString();
+
+    assert.notEqual(randStringOne, randStringTwo);
+  });
+
+  it('should return a 6 digit string', () => {
+    const randString = generateRandomString();
+
+    assert.isTrue(randString.length === 6);
+  });
+});
