@@ -150,10 +150,11 @@ app.get('/register', (req, res) => {
 
 app.get('/login', (req, res) => {
   const user = findUserByCookie(users, req.session.userID);
-  const templateVars = {
-    user
-  };
-  res.render('login', templateVars);
+  if (user) {
+    res.redirect('/urls');
+  }
+
+  res.render('login', { user });
 });
 
 app.post('/urls/:shortURL/delete', (req, res) => {
