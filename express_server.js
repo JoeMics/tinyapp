@@ -197,15 +197,13 @@ app.post('/urls/:shortURL', (req, res) => {
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   const user = findUserByEmail(users, email);
-  // if user can't be found, respond with 403
   if (!user) {
-    return res.status(403).send('User not found');
+    return res.status(403).send('Incorrect credentials.');
   }
-  // if found compare passwords
+
   bcrypt.compare(password, user.password, (err, isMatching) => {
     if (!isMatching) {
-      // if they don't match, respond with 403
-      return res.status(403).send('Password and email do not match');
+      return res.status(403).send('Incorrect credentials.');
     }
 
     req.session.userID = user.id;
