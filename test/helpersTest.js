@@ -90,3 +90,17 @@ describe('#findUserByCookie', () => {
     assert.isUndefined(actualUser);
   });
 });
+
+describe('#urlsForUser', () => {
+  it('should return a list of urls that belong to a user', () => {
+    const expectedResult = {
+      "b2xVn2": {
+        longURL: "http://www.lighthouselabs.ca",
+        userID: "049b06"
+      },
+    };
+    const actualResult = urlsForUser(urlDatabase, "049b06");
+
+    assert.deepEqual(expectedResult, actualResult);
+  });
+});
