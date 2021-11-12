@@ -159,10 +159,10 @@ app.get('/login', (req, res) => {
 app.post('/urls/:shortURL/delete', (req, res) => {
   const { shortURL } = req.params;
   const user = findUserByCookie(users, req.session.userID);
-  // if user is not logged in, return 403
   if (!user) {
     return res.status(403).send("Error: must be logged in to delete URLs");
   }
+  
   // check if link doesn't belong to user, return 403
   const userURLS = urlsForUser(urlDatabase, user.id);
   if (!userURLS[shortURL]) {
